@@ -41,12 +41,12 @@ void pin_config(void)
 	*pRccAHB1ENR |= (1 << 3);
 
 
-	*pGPIOD_MODER &= ~( 0x3 << 2);//Clear moder1 - LCD_E
-	*pGPIOD_MODER &= ~( 0x3 << 6);//Clear moder3 - LCD_RS
-	*pGPIOD_MODER &= ~( 0x3 << 8);//Clear moder4 - LCD_D4
-	*pGPIOD_MODER &= ~( 0x3 << 10);//Clear moder5 - LCD_D5
-	*pGPIOD_MODER &= ~( 0x3 << 12);//Clear moder6 - LCD_D6
-	*pGPIOD_MODER &= ~( 0x3 << 14);//Clear moder7 - LCD_D7
+	*pGPIOD_MODER &= ~( 0x3 << 2);
+	*pGPIOD_MODER &= ~( 0x3 << 6);
+	*pGPIOD_MODER &= ~( 0x3 << 8);
+	*pGPIOD_MODER &= ~( 0x3 << 10);
+	*pGPIOD_MODER &= ~( 0x3 << 12);
+	*pGPIOD_MODER &= ~( 0x3 << 14);
 
 	*pGPIOD_MODER |= (1 << 2);
 	*pGPIOD_MODER |= (1 << 6);
@@ -60,30 +60,30 @@ void lcd_command(uint8_t command)
 {
 	GPIO(PIN_RS, 0);
 	lcd_write(command);
-	//lcd_write(command & 0x0F);
 }
 
 void lcd_char(uint8_t char_data)
 {
 	GPIO(PIN_RS, 1);
 	lcd_write(char_data);
-	//lcd_write(char_data & 0x0F);
 }
 
-void lcd_string(char *string) {
-    while (*string != '\0') {
+void lcd_string(char *string)
+{
+    while (*string != '\0')
+	    {
     	lcd_char(*string);
         string++;
     }
 }
 
-void lcd_String_xy (char row, char pos, char *str)  /* Send string to LCD function */
+void lcd_String_xy (char row, char pos, char *str) 
 {
 	if (row == 0)
 	lcd_command((pos & 0x0F)|0x80);
 	else if (row == 1)
 	lcd_command((pos & 0x0F)|0xC0);
-	lcd_string(str);	/* Call LCD string function */
+	lcd_string(str);	
 }
 
 void lcd_init()
@@ -116,8 +116,6 @@ void lcd_write(uint8_t data)
     GPIO(1, 1);
     delay(5);
     GPIO(1, 0);
-
-    //delay(20);
 
     GPIO(4, (low_nibble & 0x01) ? 1 : 0);
     GPIO(5, (low_nibble & 0x02) ? 1 : 0);
@@ -153,10 +151,8 @@ int main(void)
     lcd_init();
 
     lcd_clear();
-	lcd_string("Ismael Mendoza");  /* write string on 1st line of LCD*/
+	lcd_string("Ismael Mendoza"); 
 	lcd_command(0xC0);
-	lcd_string("Tarea pantalla");  /*write string on 2nd line*/
-
-	while(1);
+	lcd_string("Tarea pantalla");  
 }
 
